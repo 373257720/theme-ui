@@ -6,25 +6,24 @@
 <script>
 export default {
   props: {
-    name: String,
+    name: String
   },
-  data() {
+  data () {
     return {
-      curName: this.name,
-    };
+      curName: this.name
+    }
   },
   watch: {
     name: function (newVal, oldVal) {
-      this.curName = newVal;
+      this.curName = newVal
     },
     curName: function (newVal, oldVal) {
-      this.$emit("update:name", newVal);
-    },
+      this.$emit('update:name', newVal)
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
-
 <style lang='scss'>
 .GZ-input {
   @include Font($FontSize: inherit, $lineHeight: 40px, $color: #606266);

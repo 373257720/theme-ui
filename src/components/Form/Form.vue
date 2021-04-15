@@ -8,7 +8,7 @@
       class="demo-ruleForm"
     >
       <el-form-item label="活动名称" prop="name">
-        <Custom-Input :name.sync="ruleForm.name"></Custom-Input>
+        <GZ-Input :name.sync="ruleForm.name"></GZ-Input>
       </el-form-item>
       <el-form-item label="活动区域" prop="region">
         <GZ-select
@@ -37,6 +37,44 @@
           :resourceList="options"
         ></GZ-radio>
       </el-form-item>
+      <el-form-item label="上传图片">
+        <div class="background_picture">
+          <el-upload
+            action
+            list-type="picture-card"
+            :limit="1"
+            :http-request="
+              function (params) {
+                return uploadFile(
+                  params,
+                  'background_picture',
+                  'background_picture_id'
+                );
+              }
+            "
+            :on-preview="handlePictureCardPreview"
+            :file-list="fileList"
+            :on-remove="
+              function (params) {
+                return appear3(params, 'background_picture');
+              }
+            "
+            :on-error="
+              function (params) {
+                return appear3(params, 'background_picture');
+              }
+            "
+            :before-upload="
+              function (params) {
+                return dispear3(params, 'background_picture');
+              }
+            "
+
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+        </div>
+      </el-form-item>
       <el-form-item>
         <div class="submit">
           <GZ-button @childclick="submitForm('ruleForm')"
@@ -48,11 +86,15 @@
         </div>
       </el-form-item>
     </el-form>
+    <GZ-MessageBox
+      @childclick="dialogVisible"
+      :visible.sync="visible"
+    ></GZ-MessageBox>
   </div>
 </template>
 
 <script>
-import CustomInput from '@/components/Form/input'
+import GZInput from '@/components/Form/input'
 import GZTextarea from '@/components/Form/textarea'
 import GZradio from '@/components/Form/radio'
 import GZcheckbox from '@/components/Form/checkbox'
@@ -60,19 +102,23 @@ import GZselect from '@/components/Form/select'
 import GZmutipleSelect from '@/components/Form/mutipleSelect'
 import GZswitch from '@/components/Form/switch'
 import GZbutton from '@/components/Form/Button'
+import GZMessageBox from '@/components/Notice/MessageBox'
 export default {
   components: {
-    'Custom-Input': CustomInput,
+    'GZ-Input': GZInput,
     'GZ-Textarea': GZTextarea,
     'GZ-radio': GZradio,
     'GZ-checkbox': GZcheckbox,
     'GZ-select': GZselect,
     'GZ-mutipleSelect': GZmutipleSelect,
     'GZ-switch': GZswitch,
-    'GZ-button': GZbutton
+    'GZ-button': GZbutton,
+    'GZ-MessageBox': GZMessageBox
   },
   data () {
     return {
+      fileList: [],
+      visible: false,
       checkboxList: ['selected and disabled', 'Option A'],
       options: [
         {
@@ -150,12 +196,15 @@ export default {
     }
   },
   methods: {
+
+    dialogVisible (isture) {
+      this.visible = false
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.visible = true
         } else {
-          console.log('error submit!!')
           return false
         }
       })

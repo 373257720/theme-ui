@@ -15,30 +15,30 @@ export default {
   props: {
     resource: {
       type: String,
-      default: function () {},
+      default: function () {}
     },
     resourceList: {
       type: Array,
-      default() {
-        return [];
-      },
-    },
+      default () {
+        return []
+      }
+    }
   },
-  data() {
+  data () {
     return {
-      radio: "",
-    };
+      radio: ''
+    }
   },
   watch: {
     resource: function (newVal, oldVal) {
-      this.radio = newVal;
+      this.radio = newVal
     },
     radio: function (newVal, oldVal) {
-      this.$emit("update:resource", newVal);
-    },
+      this.$emit('update:resource', newVal)
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style lang='scss'>
 .GZ-radio {

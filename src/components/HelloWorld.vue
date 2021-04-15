@@ -18,7 +18,7 @@ import GZcheckbox from '@/components/Form/checkbox'
 import GZselect from '@/components/Form/select'
 import GZmutipleSelect from '@/components/Form/mutipleSelect'
 import GZswitch from '@/components/Form/switch'
-// import { component } from 'vue/types/umd'
+
 export default {
   name: 'HelloWorld',
   data () {

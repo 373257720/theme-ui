@@ -11,6 +11,13 @@
       "font_class": "shanchu",
       "unicode": "e68a",
       "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "902005",
+      "name": "arrow down",
+      "font_class": "arrowdown",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
     }
   ]
 }

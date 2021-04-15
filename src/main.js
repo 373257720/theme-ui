@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './assets/icon/iconfont.css'
+import './assets/font/iconfont.css'
 import './sass/main.scss'
 /* eslint-disable no-new */
 import ElementUI from 'element-ui'

@@ -17,6 +17,9 @@
         transform: translateX(-50%);
     }
 }
+@mixin selector($selector) {
+    
+}
 @mixin prefix($property, $value, $prefixes) {
     @each $prefix in $prefixes {
       -#{$prefix}-#{$property}: $value;
@@ -28,17 +31,23 @@
     border: $px $shape $color;  
     @include prefix(border-radius,$radius, webkit ms moz);
 }
-@mixin boxModel($width, $height, $background-color,$padding:0,$margin:0) {
-    box-sizing: border-box;
+@mixin boxModel($width, $height, $background-color,$padding:0,$margin:0 ,
+$box-sizing: 'border-bo'x) 
+{
+    box-sizing: $box-sizing;
     width: $width;
     height: $height;
-    background-color: $background-color;
+    background: $background-color;
     padding:$padding;
     margin: $margin;
 }
-@mixin Font($FontSize, $lineHeight, $color,) {
+@mixin Font($FontSize, $lineHeight, $color) {
     font-size: $FontSize;
     line-height: $lineHeight;
     color: $color;
 }
+@mixin displayflex($direction, $horizontal, $vertical) {
+ /* 定义 */
 
+   
+}

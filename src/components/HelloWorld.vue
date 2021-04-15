@@ -4,14 +4,20 @@
     <GZ-Textarea></GZ-Textarea>
     <GZ-radio></GZ-radio>
     <GZ-checkbox></GZ-checkbox>
+    <GZ-select></GZ-select>
+    <GZ-mutipleSelect></GZ-mutipleSelect>
+    <GZ-switch></GZ-switch>
   </div>
 </template>
 
 <script>
-import CustomInput from '@/components/input/input'
-import GZTextarea from '@/components/input/textarea'
-import GZradio from '@/components/radio/radio'
-import GZcheckbox from '@/components/checkbox/checkbox'
+import CustomInput from '@/components/Form/input'
+import GZTextarea from '@/components/Form/textarea'
+import GZradio from '@/components/Form/radio'
+import GZcheckbox from '@/components/Form/checkbox'
+import GZselect from '@/components/Form/select'
+import GZmutipleSelect from '@/components/Form/mutipleSelect'
+import GZswitch from '@/components/Form/switch'
 // import { component } from 'vue/types/umd'
 export default {
   name: 'HelloWorld',
@@ -24,7 +30,10 @@ export default {
     'Custom-Input': CustomInput,
     'GZ-Textarea': GZTextarea,
     'GZ-radio': GZradio,
-    'GZ-checkbox': GZcheckbox
+    'GZ-checkbox': GZcheckbox,
+    'GZ-select': GZselect,
+    'GZ-mutipleSelect': GZmutipleSelect,
+    'GZ-switch': GZswitch
   }
 }
 </script>

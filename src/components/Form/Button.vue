@@ -1,29 +1,40 @@
 <template>
-  <div class="GZ-button">
-    <el-button @click="childclick">
-        <slot></slot>
-    </el-button>
-  </div>
+  <el-button class="GZ-button" :style="CombineStyle" @click="childclick">
+    <slot></slot>
+  </el-button>
 </template>
 <script>
 export default {
   props: {
-    options: Array,
-    region: String
+    // options: Array,
+    // region: String
+    styleParameters: Object
   },
   data () {
     return {
-      value: ''
+      styleData: {
+        '--color': '#606266',
+        '--width': '60px',
+        '--height': '40px',
+        '--lineHeight': '40px',
+        '--border': '2px',
+        '--shape': 'solid',
+        '--radius': '0',
+        '--background': 'white',
+        '--padding': '0 30px 0 15px'
+      },
+      CombineStyle: {}
+      // value: ''
     }
   },
-  watch: {
-    region: function (newVal, oldVal) {
-      this.value = newVal
-    },
-    value: function (newVal, oldVal) {
-      this.$emit('update:region', newVal)
+  created () {
+    this.CombineStyle = {
+      ...this.styleData,
+      ...this.styleParameters
     }
+    console.log(this.CombineStyle)
   },
+  watch: {},
   methods: {
     childclick () {
       this.$emit('childclick')
@@ -32,19 +43,23 @@ export default {
 }
 </script>
 <style lang='scss'>
-.GZ-button {
-  .el-button {
-    &:focus,
-    &:hover {
-      color: #fff;
-      border-color: $themeColor;
-      background-color: $themeColor;
-    }
-    &:active {
-      color: #93c093ec;
-      border-color: #93c093ec;
-      outline: 0;
-    }
+.GZ-button.el-button {
+  @include boxModel(
+    $width: var(--width),
+    $height: var(--height),
+    $background-color: $themeColor
+  );
+  @include Font();
+  @include border($radius: var(--radius));
+  &:hover {
+    // color: #fff;
+    background-color: #58bc58;
+  }
+  &:active {
+    // color: #93c093ec;
+    background-color: $themeColor;
+    // border-color: #93c093ec;
+    // outline: 0;
   }
 }
 </style>

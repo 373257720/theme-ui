@@ -26,28 +26,26 @@
     }
     #{$property}: $value;
 }
-
-@mixin border($px, $shape, $color,$radius:0) {
+@mixin border($px:1px, $color:#dcdfe6,$shape:solid, $radius:0) {
     border: $px $shape $color;  
-    @include prefix(border-radius,$radius, webkit ms moz);
+    border-radius: $radius;
+    // @include prefix(border-radius,$radius, webkit ms moz);
 }
-@mixin boxModel($width, $height, $background-color,$padding:0,$margin:0 ,
-$box-sizing: 'border-bo'x) 
+@mixin boxModel($width:inherit, $height:inherit, $background-color:$themeColor,$padding:0,$margin:0 ,
+$box-sizing: 'border-box') 
 {
     box-sizing: $box-sizing;
     width: $width;
     height: $height;
-    background: $background-color;
+    background-color: $background-color;
     padding:$padding;
     margin: $margin;
 }
-@mixin Font($FontSize, $lineHeight, $color) {
+@mixin Font($FontSize:inherit, $lineHeight:inherit, $color:white) {
     font-size: $FontSize;
     line-height: $lineHeight;
     color: $color;
 }
 @mixin displayflex($direction, $horizontal, $vertical) {
- /* 定义 */
-
-   
+ /* 定义 */ 
 }

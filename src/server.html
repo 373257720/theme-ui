@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="Demo">
+        <!-- <div class="time" class="time">XX:XX:XX</div>
+        <div class="Server-time"><span class="Date">XXXX/XX/XX</span><span>Server Time</span> </div> -->
+    </div>
+    <script>
+        /**
+            @param {string} node 需要放入的目标节点选择器
+            @param {string} background 时间的背景颜色
+            @param {string} Clockcolor 时刻的字体颜色
+            @param {string} ClockFontsize 时刻的字体大小
+            @param {string} Datecolor 日期的字体颜色
+            @param {string} DateFontsize 日期的字体大小
+            @param {string} serverUrl 访问地址
+            @param {string} AccessInterval 访问地址间隔,单位毫秒
+        */
+
+        const serverUrl = 'common/server-time';
+        function start(node, background = '#555', Clockcolor, ClockFontsize = "30px", Datecolor, DateFontsize = "12px", serverUrl, AccessInterval = 60000,) {
+            let localTime = null, serverTime = null, LocalTimer = null, serverTimer = null, time = null, clock = null;
+            localTime = new Date().getTime();
+            clock = formatDate(localTime).time
+            time = formatDate(localTime).date
+            let html = `<div id="self-timer" style="width: 200px; height: 100px;color:${Clockcolor};text-align: center;
+                        background: ${background};display: flex;flex-direction: column;justify-content: center;">
+                        <div class="time" class="time" style="font-size:${ClockFontsize};margin-bottom: 5px;">${clock}</div>
+                        <div class="Server-time" style="color:${Datecolor};font-size: ${DateFontsize}"><span class="Date" >${time}</span>&nbsp<span>Server Time</span></div>
+                       </div>`
+            document.querySelector(node).innerHTML = html;
+            time = document.querySelector('#self-timer .time')
+            clock = document.querySelector('#self-timer .Server-time .Date')
+            function formatDate(timestamp) {
+                if (timestamp) {
+                    let date;
+                    if (timestamp.toString().length == 10) {
+                        date = new Date(parseInt(timestamp * 1000));
+
+                    } else if (timestamp.toString().length == 13) {
+                        date = new Date(parseInt(timestamp));
+                    }
+                    let YY = date.getFullYear() + '-';
+                    let MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                    let DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+                    let hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+                    let mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+                    let ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+                    let obj = {
+                        date: YY + MM + DD,
+                        time: hh + mm + ss,
+                    }
+                    return obj;
+                }
+            }
+            function axiosGetRequst(ordernos, appid) {
+                axios({
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    method: 'get',
+                    url: serverUrl,
+                    params: {
+
+                    }
+                }).then(function (res) {
+                    let serverTime = new Date(res.data.datetime);
+                    localTime = serverTime.getTime()
+                    // if (response.data.code === 0) {
+                    //     _this.datalist = response.data.data;
+                    //     _this.message = response.data.message;
+                    // }
+                }).catch(function (error) {
+                    console.log(error)
+
+                })
+            };
+            axiosGetRequst();
+            LocalTimer = setInterval(() => {
+                if (localTime) {
+                    localTime += 1000;
+                    clock.innerHTML = formatDate(localTime).date
+                    time.innerHTML = formatDate(localTime).time
+                }
+            }, 1000)
+            // serverTimer = setInterval(() => {
+            //     axiosGetRequst();
+            // }, AccessInterval);
+        }
+        start('#Demo', '#555', '#fff', undefined, '#fff', undefined, serverUrl, 60000)
+
+        function fun(n, o) {
+            console.log(o);
+            return {
+                fun: function (m) {
+                    return fun(m, n)
+                }
+            }
+        }
+        var a = fun(0);
+        console.log(a.fun(1));
+        // a.fun(1);a.fun(2);a.fun(3);
+
+    </script>
+</body>
+<style>
+    #self-timer {
+        /* width: 200px;
+        height: 100px;
+        color: #FFF;
+        text-align: center;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; */
+    }
+
+    #self-timer .time {
+        /* font-size: 22px;
+        margin-bottom: 5px; */
+        /* background: #58bc58; */
+    }
+
+    #self-timer .Server-time {
+        /* background: #fff; */
+        /* font-size: 12px; */
+    }
+</style>
+
+</html>

@@ -8,22 +8,62 @@
       class="demo-ruleForm"
     >
       <el-form-item label="活动名称" prop="name">
-        <GZ-Input :name.sync="ruleForm.name"></GZ-Input>
+        <GZ-Input
+          :styleParameters="{
+            '--color': '#606266',
+            '--width': '500px',
+          }"
+          :name.sync="ruleForm.name"
+        ></GZ-Input>
       </el-form-item>
       <el-form-item label="活动区域" prop="region">
         <GZ-select
+          :styleParameters="{
+            '--width': '200px',
+          }"
           :region.sync="ruleForm.region"
           :options="options"
         ></GZ-select>
       </el-form-item>
+      <el-form-item label="远程搜索">
+        <el-select
+          v-model="value"
+          multiple
+          filterable
+          remote
+          loading-text=""
+          element-loading-spinner = "el-icon-loading"  
+          placeholder="请输入关键词"
+          :remote-method="remoteMethod"
+          :loading="loading"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="活动区域多选" prop="regions">
         <GZ-mutipleSelect
+          :styleParameters="{
+            '--color': '#606266',
+            '--height': '40px',
+            '--width': '500px',
+          }"
           :regions.sync="ruleForm.regions"
           :options="options"
         ></GZ-mutipleSelect>
       </el-form-item>
       <el-form-item label="即时配送" prop="delivery">
-        <GZ-switch :delivery.sync="ruleForm.delivery"></GZ-switch>
+        <GZ-switch
+          :styleParameters="{
+            '--width': '200px',
+          }"
+          :delivery.sync="ruleForm.delivery"
+        ></GZ-switch>
       </el-form-item>
       <el-form-item label="活动性质" prop="type">
         <GZ-checkbox
@@ -44,43 +84,70 @@
             list-type="picture-card"
             :limit="1"
             :http-request="
-              function (params) {
-                return uploadFile(
+              (params) => {
+                uploadFile(
                   params,
                   'background_picture',
                   'background_picture_id'
                 );
               }
             "
-            :on-preview="handlePictureCardPreview"
             :file-list="fileList"
             :on-remove="
-              function (params) {
-                return appear3(params, 'background_picture');
+              (params) => {
+                appear(params, 'background_picture');
               }
             "
+            :on-preview="handlePictureCardPreview"
             :on-error="
-              function (params) {
-                return appear3(params, 'background_picture');
+              (params) => {
+                appear(params, 'background_picture');
               }
             "
             :before-upload="
-              function (params) {
-                return dispear3(params, 'background_picture');
+              (params) => {
+                dispear(params, 'background_picture');
               }
             "
-
           >
+            <!-- <div slot="tip"> -->
+            <!-- <img src="../../assets/logo.png" alt="" /> -->
             <i class="el-icon-plus"></i>
+            <!-- </div> -->
           </el-upload>
+          <el-dialog :visible.sync="UploaddialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="" />
+          </el-dialog>
         </div>
+      </el-form-item>
+      <el-form-item label="上传图片">
+        <el-upload
+          class="upload-demo"
+          drag
+          action="https://jsonplaceholder.typicode.com/posts/"
+          multiple
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">
+            只能上传jpg/png文件，且不超过500kb
+          </div>
+        </el-upload>
       </el-form-item>
       <el-form-item>
         <div class="submit">
-          <GZ-button @childclick="submitForm('ruleForm')"
+          <GZ-button
+            :styleParameters="{
+              '--width': '100px',
+            }"
+            @childclick="submitForm('ruleForm')"
             ><span>提交</span></GZ-button
           >
-          <GZ-button @childclick="resetForm('ruleForm')"
+          <GZ-button
+            :styleParameters="{
+              '--width': '100px',
+            }"
+            @childclick="resetForm('ruleForm')"
             ><span>重置</span></GZ-button
           >
         </div>
@@ -92,7 +159,6 @@
     ></GZ-MessageBox>
   </div>
 </template>
-
 <script>
 import GZInput from '@/components/Form/input'
 import GZTextarea from '@/components/Form/textarea'
@@ -119,6 +185,8 @@ export default {
     return {
       fileList: [],
       visible: false,
+      dialogImageUrl: '',
+      UploaddialogVisible: false,
       checkboxList: ['selected and disabled', 'Option A'],
       options: [
         {
@@ -192,11 +260,166 @@ export default {
           { required: true, message: '请选择活动资源', trigger: 'change' }
         ],
         desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
-      }
+      },
+
+      options: [],
+      value: [],
+      list: [],
+      loading: false,
+      states: [
+        'Alabama',
+        'Alaska',
+        'Arizona',
+        'Arkansas',
+        'California',
+        'Colorado',
+        'Connecticut',
+        'Delaware',
+        'Florida',
+        'Georgia',
+        'Hawaii',
+        'Idaho',
+        'Illinois',
+        'Indiana',
+        'Iowa',
+        'Kansas',
+        'Kentucky',
+        'Louisiana',
+        'Maine',
+        'Maryland',
+        'Massachusetts',
+        'Michigan',
+        'Minnesota',
+        'Mississippi',
+        'Missouri',
+        'Montana',
+        'Nebraska',
+        'Nevada',
+        'New Hampshire',
+        'New Jersey',
+        'New Mexico',
+        'New York',
+        'North Carolina',
+        'North Dakota',
+        'Ohio',
+        'Oklahoma',
+        'Oregon',
+        'Pennsylvania',
+        'Rhode Island',
+        'South Carolina',
+        'South Dakota',
+        'Tennessee',
+        'Texas',
+        'Utah',
+        'Vermont',
+        'Virginia',
+        'Washington',
+        'West Virginia',
+        'Wisconsin',
+        'Wyoming'
+      ]
     }
   },
+  mounted () {
+    this.list = this.states.map((item) => {
+      return { value: `value:${item}`, label: `label:${item}` }
+    })
+  },
   methods: {
-
+    remoteMethod (query) {
+      if (query !== '') {
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+          this.options = this.list.filter((item) => {
+            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
+          })
+        }, 1000)
+      } else {
+        this.options = []
+      }
+    },
+    styleFunction (
+      color,
+      width,
+      height,
+      lineHeight,
+      border,
+      shape,
+      radius,
+      background,
+      padding
+    ) {
+      return {
+        '--color': '#606266',
+        '--width': '100%',
+        '--height': '40px',
+        '--lineHeight': '40px',
+        '--border': '2px',
+        '--shape': 'solid',
+        '--radius': '5px',
+        '--background': 'white',
+        '--padding': '0 30px 0 15px'
+      }
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    appear (params, picname) {
+      this.handleRemove(
+        `.${picname} .el-upload--picture-card`,
+        `.${picname} .el-upload-list__item`
+      )
+      this.ruleForm[`${picname}_id`] = ''
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.UploaddialogVisible = true
+    },
+    dispear (file, picname) {
+      let width
+      let height
+      const isSize = new Promise(function (resolve, reject) {
+        if (!/.(jpg|jpeg|png)$/.test(file.type)) {
+          return reject('type_error')
+        }
+        if (picname === 'background_picture') {
+          width = 50
+          height = 50
+        }
+        let _URL = window.URL || window.webkitURL
+        let img = new Image()
+        img.onload = function () {
+          let valid = img.width >= width && img.height >= height
+          valid ? resolve() : reject()
+        }
+        img.src = _URL.createObjectURL(file)
+      })
+        .then(() => {
+          this.choose(
+            `.${picname} .el-upload--picture-card`,
+            `.${picname} .el-upload-list__item`
+          )
+          return file
+        })
+        .catch((err) => {
+          if (err === 'type_error') {
+            // this.$message.error(this.$t('machines.JPEGJPGPNG'))
+          }
+          return Promise.reject()
+        })
+      return isSize
+    },
+    choose (a) {
+      var b = document.querySelector(a)
+      b.style = 'display:none;'
+    },
+    handleRemove (a, b) {
+      document.querySelector(a).style =
+        'position:absolute;bottom:0;display:block;'
+      document.querySelector(b).style = 'display:none'
+    },
     dialogVisible (isture) {
       this.visible = false
     },
@@ -211,19 +434,44 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+    },
+    uploadFile (params, picname, picid) {
+      const _file = params.file
+      console.log(params)
+      // const isLt2M = _file.size / 1024 / 1024 < 2;
+      this.formData = new FormData()
+      this.formData.append('file', _file)
+      console.log(this.formData)
+      // this.$axios({
+      //   method: "post",
+      //   url: `http://atm.wearetechman.com/home/common.picture/upload.html`,
+      //   data: this.formData,
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // })
+      //   .then((res) => {
+      //     if (res.data.ret == 0) {
+      //       console.log(res.data);
+      //       this.ruleForm[picid] = res.data.data.picture_id;
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .GZ-form {
-  .el-form-item.is-error .el-input__inner {
-    border-color: #f56c6c;
+  /deep/ .el-form-item.is-error .el-input__inner {
+    border-color: #ee3f3f;
   }
-  .GZ-input {
-    width: 200px;
-  }
+  // .GZ-input {
+  //   width: 200px;
+  // }
   .GZ-select {
     width: 200px;
   }
@@ -232,6 +480,37 @@ export default {
   }
   .submit {
     display: flex;
+  }
+  .el-upload-list__item.is-success .el-upload-list__item-status-label {
+    display: none;
+  }
+  /deep/ .background_picture {
+    position: relative;
+    height: 200px;
+    width: 400px;
+    .el-upload--picture-card {
+      bottom: 0;
+      width: 100%;
+      height: 200px;
+      border-color: #c0ccda;
+      background: white;
+      position: absolute;
+    }
+    .el-icon-plus {
+      line-height: 200px;
+    }
+    .el-upload-list__item {
+      margin: 0;
+      // transform: none;
+      overflow: hidden;
+      bottom: 0;
+      width: 100%;
+      height: 200px;
+      position: absolute;
+    }
+  }
+  /deep/ .upload-demo {
+    width: 400px;
   }
 }
 </style>
